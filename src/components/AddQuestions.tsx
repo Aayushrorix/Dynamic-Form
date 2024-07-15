@@ -189,7 +189,6 @@ function AddQuestions() {
 						</>
 					))}
 				</div>
-
 			</div>
 
 			<div className='home-main'>

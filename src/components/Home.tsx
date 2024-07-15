@@ -26,6 +26,10 @@ function Home() {
         dispatch(removeForm(id))
     }
 
+    function onPreview(id:string){
+        nevigate(`/preview/${id}`)
+    }
+
     return (
         <>
         <div>
@@ -39,7 +43,7 @@ function Home() {
                             <span>
                                 <button type='button' onClick={()=>onEditForm(form.id)}>Edit</button>
                                 <button type='button' onClick={()=>onRemoveForm(form.id)}>Remove</button>
-                                <button type='button'>Preview</button>
+                                <button type='button' onClick={()=>onPreview(form.id)}>Preview</button>
                             </span>
                         </div>
                         

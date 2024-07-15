@@ -1,0 +1,43 @@
+.add-form-main{
+    text-align: center;
+    top: 36%;
+    position: absolute;
+    left: 43%;
+    align-items: center;
+}
+
+.input-form-name{
+    border: 2px solid black;
+    border-radius: 3px;
+    background-color: transparent;
+    height: 40px;
+    width: 250px;
+    color: rgb(69, 7, 63);
+}
+
+.input-form-name-label{
+    margin-bottom: 5px;
+    color: rgb(73, 6, 70);
+}
+
+.btn-div{
+    margin-top: 15px;
+}
+
+.btn-back-home{
+    background-color: red;
+    margin: 10px;
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.btn-add-questions-nevigate{
+    background-color: rgb(90, 36, 171);
+    margin: 10px;
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 5px;
+}

@@ -1,0 +1,33 @@
+.home-main{
+    inset-block-end: 60px;
+    text-align: center;
+    width: 100%;
+}
+
+.btn-add-form{
+    position: absolute;
+    bottom: 30px;
+    right: 40px;
+    color: white;
+    font-size: 20px;
+    background-color: red;
+    width: 50px;
+    height: 50px;
+    border: 0px;
+    border-radius: 200%;
+    box-shadow: 0 0 0 0.2em #f4aab9;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.grid-item {
+    /* background-color: #f0f0f0; */
+    background-color: rgba(245, 229, 209, 0.427);
+    padding: 20px;
+    text-align: center;
+    margin: 10px;
+}

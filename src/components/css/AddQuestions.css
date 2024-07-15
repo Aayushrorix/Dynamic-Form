@@ -1,0 +1,115 @@
+.home-image{
+    height: 20px;
+    width: 20px;
+    background-color: transparent;
+}
+
+fieldset legend {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    /* overflow: hidden !important; */
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+  }
+
+  .question-heading{
+    font-family: Tahoma, sans-serif;
+  }
+
+  .container{
+    display: flex;
+  }
+
+  .container .left,
+  .container .right {
+      display: inline-block;
+  }
+  
+  .container .left {
+      width: 48%;
+      position: relative;
+      float: left;
+      margin: 15px;
+      overflow: hidden;
+  }
+  .container .right {
+      width: 48%;
+      position: relative;
+      /* float: right; */
+      margin: 15px;
+      /* overflow: hidden; */
+  }
+
+  .left {
+    
+    /* overflow: hidden; */
+    text-align: center;
+    background-color: rgba(245, 229, 209, 0.427);
+    opacity: 0.9;
+    border-radius: 15px;
+    /* padding: 10px; */
+    /* padding-bottom: 25%; */
+    margin-top: 0px;
+    position: -ms-page;
+    height: fit-content;
+    height: 600px;
+  }
+
+  .right {
+    /* overflow: hidden; */
+    text-align: center;
+    background-color: rgba(245, 229, 209, 0.427);
+    opacity: 0.9;
+    border-radius: 15px;
+    /* padding: 10px; */
+    /* padding-bottom: 25%; */
+    margin-top: 0px;
+    position: -ms-page;
+    height: 600px;
+  }
+
+  .right{
+    text-align: center;
+    /* overflow: scroll; */
+    /* overflow-y: scroll; */
+    overflow-y: auto;
+  }
+  
+
+.input-box{
+    border: 2px solid black;
+    border-radius: 3px;
+    background-color: transparent;
+    height: 40px;
+    width: 250px;
+    color: rgb(69, 7, 63);
+    margin:2px;
+}
+
+.add-question-btn{
+  background-color: rgb(223, 133, 31);
+  margin-top: 15px;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  border: none;
+}
+
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 10px;
+}
+
+.grid-item {
+  /* background-color: #f0f0f0; */
+  background-color: rgba(245, 229, 209, 0.427);
+  padding: 20px;
+  text-align: center;
+  margin: 10px;
+}

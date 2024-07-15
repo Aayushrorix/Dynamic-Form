@@ -193,9 +193,10 @@ function AddQuestions() {
 			</div>
 
 			<div className='home-main'>
-				<button onClick={()=>{nevigate('/')}} className='btn-add-form'><img className="home-image" src="home.png"></img></button>
+				<button onClick={()=>{nevigate('/')}} className='btn-add-form'><img className="home-image" src="home_icon.png"></img></button>
 			</div>
 		</>
+
 	)
 }
 

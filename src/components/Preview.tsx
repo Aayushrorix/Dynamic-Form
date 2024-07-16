@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
+// import { useState } from 'react';
 
 function Preview() {
     const {id} = useParams()
@@ -13,6 +14,7 @@ function Preview() {
     }
     const forms = useSelector((state: RootState) => state.forms);
     const form = forms.filter((form:any)=>form.id===id)[0]
+    // const [radioOpt, setRadioOpt] = useState('')
 
     const initialValues: any = {};
     const validationSchema: any = {};
@@ -44,13 +46,44 @@ function Preview() {
                     {form.fields.map((field:any)=>(
                         <>
                             <div className='input-form-label'>{field.question}</div>
-                            <input className='input-form' 
+
+
+                            {field.type!=='radio' && field.type!=='dropdown' && <input className='input-form' 
                             type={field.type} 
                             name={field.question}
                             value={pformik.values[field.question]}
                             onChange={pformik.handleChange}
                             onBlur={pformik.handleBlur}
-                            placeholder={field.question}/>
+                            placeholder={field.question}/>}
+
+
+                            {field.type==='dropdown' && 
+                                <select 
+                                className="input-box"
+                                name={field.question}
+                                value={pformik.values[field.question]}
+                                onChange={pformik.handleChange}
+                                onBlur={pformik.handleBlur}
+                                >
+                                <option value="">Select</option>
+                                {field.dropList?.map((opt:string)=>(
+                                    <option value={opt}>{opt}</option>
+                                ))}
+                            </select>
+                            }
+
+                            {field.type==='radio' && 
+                                <>
+                                    {field.radioList?.map((opt:string)=>(
+                                        <>
+                                        {opt}<input type="radio" name={field.question} value={opt}/>
+                                        </>
+                                    ))}
+                                </>
+                            }
+
+                            
+
                             {pformik.touched[field.question] && pformik.errors[field.question] && <p style={{color:"red"}}>{field.question} is Required</p>}
                         </>
                     ))}

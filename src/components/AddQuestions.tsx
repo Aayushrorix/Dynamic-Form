@@ -20,6 +20,12 @@ function AddQuestions() {
 	const form:any = forms.filter((f:any)=>f.id===id)[0]
 	const [fields,setFields] = useState(form.fields?form.fields:[])
 
+	const [radioOpt, setradioOpt] = useState('')
+	const [radioList, setRadioList] = useState<string[]>([])
+
+	const [dropOpt, setDropOpt] = useState('')
+	const [dropList, setDropList] = useState<string[]>([])
+
     const options = [
         { value: 'required', label: 'Requited' },
         { value: 'maxLength', label: 'Max Length' },
@@ -54,6 +60,8 @@ function AddQuestions() {
 			min:undefined,
 			maxLength:false,
 			minLength:false,
+			radioList:[],
+			dropList:[],
 		},
 		validationSchema: Yup.object().shape({
 			question:Yup.string()
@@ -87,6 +95,8 @@ function AddQuestions() {
 					min:selectedItems.includes('minLength')?min:undefined,
 					maxLength:selectedItems.includes('maxLength')?true:false,
 					minLength:selectedItems.includes('minLength')?true:false,
+					radioList:radioList,
+					dropList:dropList,
 				}])
 
 				dispatch(updateField({id:String(id),fields:[...fields, {
@@ -98,9 +108,13 @@ function AddQuestions() {
 					min:selectedItems.includes('minLength')?min:undefined,
 					maxLength:selectedItems.includes('maxLength')?true:false,
 					minLength:selectedItems.includes('minLength')?true:false,
+					radioList:radioList,
+					dropList:dropList,
 				}]}))
 
 				selectedItems.length=0
+				setRadioList([])
+				setDropList([])
 			}
 			else{
 				if(fields.filter((field:any) => field.qid===currEditId).length>0){
@@ -114,6 +128,8 @@ function AddQuestions() {
 							min:selectedItems.includes('minLength')?min:undefined,
 							maxLength:selectedItems.includes('maxLength')?true:false,
 							minLength:selectedItems.includes('minLength')?true:false,
+							radioList:radioList,
+							dropList:dropList,
 						}
 					])
 					dispatch(updateField({
@@ -129,6 +145,8 @@ function AddQuestions() {
 								min:selectedItems.includes('minLength')?min:undefined,
 								maxLength:selectedItems.includes('maxLength')?true:false,
 								minLength:selectedItems.includes('minLength')?true:false,
+								radioList:radioList,
+								dropList:dropList,
 							}
 						]
 					}))
@@ -136,6 +154,7 @@ function AddQuestions() {
 				}
 				selectedItems.length=0
 				setEditMode(false)
+				setRadioList([])
 			}
 
 			resetForm();
@@ -147,6 +166,10 @@ function AddQuestions() {
 	useEffect(()=>{setType(qformik.values.type)},[qformik.values.type])
 	useEffect(()=>{setMax(qformik.values.max)},[qformik.values.max])
 	useEffect(()=>{setMin(qformik.values.min)},[qformik.values.min])
+	// useEffect(()=>{qformik.setFieldValue('radioList',radioList)},[radioList])
+	// useEffect(()=>{
+	// 	setRadioList([])
+	// },[type])
 
 	function removeQuestion(qid:string){
 		setFields(fields.filter((field:any) => field.qid!==qid))
@@ -158,6 +181,7 @@ function AddQuestions() {
 		qformik.setFieldValue('qid',qid)
 
 		setEditMode(true)
+
 
 		const field = fields.filter((field:any) => field.qid===qid)[0]
 
@@ -186,8 +210,46 @@ function AddQuestions() {
 		qformik.setFieldValue('max',field.max)
 		setMin(field.min)
 		qformik.setFieldValue('min',field.min)
+
+		if(field.type==='radio'){
+			setRadioList(field.radioList)
+		}
+		if(field.type==='dropdown'){
+			setDropList(field.dropList)
+		}
 	}
 
+	function removeRadioOpt(ind:number){
+		const tempr = [...radioList]
+		tempr.splice(ind,1)
+		setRadioList(tempr)
+		qformik.setFieldValue('radioList',tempr)
+	}
+
+	function addRadioOpt(){
+		if(radioOpt){
+			setRadioList([...radioList,radioOpt])
+			qformik.setFieldValue('radioList',[...radioList,radioOpt])
+		}
+		setradioOpt('')
+	}
+
+	function removeDropOpt(ind:number){
+		const tempr = [...dropList]
+		tempr.splice(ind,1)
+		setDropList(tempr)
+		qformik.setFieldValue('dropList',tempr)
+	}
+
+	function addDropOpt(){
+		if(dropOpt){
+			setDropList([...dropList,dropOpt])
+			qformik.setFieldValue('dropList',[...dropList,dropOpt])
+		}
+		setDropOpt('')
+	}
+
+	// console.log(radioList)
     return (
 		<>
 			<div className="container">
@@ -247,8 +309,56 @@ function AddQuestions() {
 								{qformik.touched.min && qformik.errors.min && <p style={{color:"red"}}>{qformik.errors.min}</p>}
 							</span>)}
 						</div>
-						<div className="grid-container">
-					</div>
+
+						{qformik.values.type==='radio' && 
+						<>
+							<div>
+								<input 
+									className="input-box" 
+									type="text" placeholder="Radio Option"
+									name="radioOpt"
+									value={radioOpt}
+									onChange={(e)=>setradioOpt(e.target.value)}
+									onBlur={qformik.handleBlur}
+								/>
+								<button type="button" onClick={addRadioOpt}>+</button>
+							</div>
+
+							<div>
+								{radioList.map((item, index)=>(
+									<div>
+									<span>{item}</span>
+									<button type="button" onClick={()=>removeRadioOpt(index)}>-</button>
+									</div>
+								))}
+							</div>
+						</>
+						}
+
+						{qformik.values.type==='dropdown' && 
+						<>
+							<div>
+								<input 
+									className="input-box" 
+									type="text" placeholder="Dropdown Option"
+									name="dropOpt"
+									value={dropOpt}
+									onChange={(e)=>setDropOpt(e.target.value)}
+									onBlur={qformik.handleBlur}
+								/>
+								<button type="button" onClick={addDropOpt}>+</button>
+							</div>
+
+							<div>
+								{dropList.map((item, index)=>(
+									<div>
+									<span>{item}</span>
+									<button type="button" onClick={()=>removeDropOpt(index)}>-</button>
+									</div>
+								))}
+							</div>
+						</>
+						}
 
 						{!editMode && 
 						<button 

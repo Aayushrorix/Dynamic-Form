@@ -5,11 +5,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addForm, editForm } from '../state/slices/FormSlice.tsx';
 import { nanoid } from '@reduxjs/toolkit';
 
+import { useFormik } from 'formik'
+import * as Yup from 'yup'
+
 function AddForm() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { oldId } = useParams();
-
     interface RootState {
         forms: any[];
     }
@@ -26,47 +28,88 @@ function AddForm() {
                 setFormName(form.formName);
                 setId(oldId);
                 setEditMode(true);
+                formik.setFieldValue('formName',form.formName)
             }
         } else {
             setId(nanoid());
         }
+        formik.setFieldValue('id',id)
     }, [oldId, forms]);
 
-    const handleAddFormClick = () => {
-        dispatch(addForm({ id, formName, fields: [] }));
-    };
+    const formik = useFormik({
+        initialValues: {
+            id:id,
+            formName: ''
+        },
+        validationSchema: Yup.object({
+            formName: Yup.string()
+            .required("Form Name is Required")
+        }),
+        onSubmit: (values, { resetForm }) => {
+            console.log("Form Submitted", values);
+            if(editMode){
+                dispatch(editForm({ id, formName }));
+            }
+            else{
+                dispatch(addForm({ id, formName, fields: [] }));
+            }
+            navigate(`/add-questions/${id}`);
+            resetForm();
+        }
+    })
 
-    const handleEditFormClick = () => {
-        dispatch(editForm({ id, formName }));
-    };
+    // formik.setFieldValue('id',id)
 
-    const handleBackToList = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault(); // Prevent default form submission behavior
+    // const handleAddFormClick = () => {
+    //     dispatch(addForm({ id, formName, fields: [] }));
+    // };
+
+    // const handleEditFormClick = () => {
+    //     dispatch(editForm({ id, formName }));
+    // };
+
+    // const handleBackToList = (e: React.FormEvent<HTMLFormElement>) => {
+    //     e.preventDefault();
+    //     navigate('/');
+    // };.
+
+    const handleBackToList = () => {
+        // e.preventDefault();
         navigate('/');
     };
 
+    useEffect(()=>{setFormName(formik.values.formName)},[formik.values.formName])
+
     return (
         <div className="add-form-main">
-            <form onSubmit={handleBackToList}>
+            <form onSubmit={formik.handleSubmit}>
+                {/* <input type = "hidden" name = "id" value={formik.values.id} onChange={formik.handleChange}/> */}
                 <div className="input-form-name-label">Form Name</div>
                 <input
                     className="input-form-name"
                     type="text"
-                    value={formName}
-                    onChange={(e) => setFormName(e.target.value)}
+                    // value={formName}
+                    // onChange={(e) => setFormName(e.target.value)}
+                    name='formName'
+                    value={formik.values.formName}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                 />
+                {formik.touched.formName && formik.errors.formName && <p style={{color:"red"}}>{formik.errors.formName}</p>}
+                <input type="hidden" name="id" value={formik.values.id} />
                 <div className="btn-div">
-                    <button className="btn-back-home" type="submit">
+                    <button className="btn-back-home" type="button" onClick={()=>handleBackToList()}>
                         Back to List
                     </button>
                     {!editMode && (
                         <button
                             className="btn-add-questions-nevigate"
-                            type="button"
-                            onClick={() => {
-                                handleAddFormClick();
-                                navigate(`/add-questions/${id}`);
-                            }}
+                            type="submit"
+                            // onClick={() => {
+                            //     handleAddFormClick();
+                            //     navigate(`/add-questions/${id}`);
+                            // }}
+                            
                         >
                             Add Questions
                         </button>
@@ -74,11 +117,12 @@ function AddForm() {
                     {editMode && (
                         <button
                             className="btn-add-questions-nevigate"
-                            type="button"
-                            onClick={() => {
-                                handleEditFormClick();
-                                navigate(`/add-questions/${id}`);
-                            }}
+                            type="submit"
+                            // onClick={() => {
+                            //     handleEditFormClick();
+                            //     navigate(`/add-questions/${id}`);
+                            // }}
+                            
                         >
                             Edit Name & Go to Questions
                         </button>

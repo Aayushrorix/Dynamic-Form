@@ -38,7 +38,6 @@ function AddQuestions() {
 	const [min, setMin] = useState<number|undefined>()
 
 	useEffect(()=>{
-		console.log(selectedItems)
 		qformik.setFieldValue('maxLength',selectedItems.includes('maxLength')?true:false)
 		qformik.setFieldValue('minLength',selectedItems.includes('minLength')?true:false)
 		qformik.setFieldValue('fieldRequired',selectedItems.includes('required')?true:false)
@@ -76,6 +75,7 @@ function AddQuestions() {
 		}),
 		onSubmit: (values, { resetForm }) => {
 
+			console.log(values)
 			if(!editMode){
 				const uuid = uuidv4();
 				setFields([...fields, {
@@ -138,19 +138,8 @@ function AddQuestions() {
 				setEditMode(false)
 			}
 
-			
-
-			
-
-
-
-			console.log("Form Submitted", values);
-			// Reset the form after submission
 			resetForm();
 			nevigate(``)
-	  
-			console.log("Form Submitted", values);
-	  
 		  }
 	})
 
@@ -158,39 +147,6 @@ function AddQuestions() {
 	useEffect(()=>{setType(qformik.values.type)},[qformik.values.type])
 	useEffect(()=>{setMax(qformik.values.max)},[qformik.values.max])
 	useEffect(()=>{setMin(qformik.values.min)},[qformik.values.min])
-
-	// function addQuestionBtn(){
-	// 	const uuid = uuidv4();
-	// 	setFields([...fields, {
-	// 		qid:uuid,
-	// 		question:question,
-	// 		type:type,
-	// 		fieldRequired:selectedItems.includes('required')?true:false,
-	// 		max:selectedItems.includes('maxLength')?max:undefined,
-	// 		min:selectedItems.includes('minLength')?min:undefined,
-	// 		maxLength:selectedItems.includes('maxLength')?true:false,
-	// 		minLength:selectedItems.includes('minLength')?true:false,
-	// 	}])
-
-	// 	dispatch(updateField({id:String(id),fields:[...fields, {
-	// 		qid:uuid,
-	// 		question:question,
-	// 		type:type,
-	// 		fieldRequired:selectedItems.includes('required')?true:false,
-	// 		max:selectedItems.includes('maxLength')?max:undefined,
-	// 		min:selectedItems.includes('minLength')?min:undefined,
-	// 		maxLength:selectedItems.includes('maxLength')?true:false,
-	// 		minLength:selectedItems.includes('minLength')?true:false,
-	// 	}]}))
-
-	// 	setQuestion('')
-	// 	setType('')
-	// 	setMax(undefined)
-	// 	setMin(undefined)
-	// 	selectedItems.length=0
-
-	// 	nevigate(``)
-	// }
 
 	function removeQuestion(qid:string){
 		setFields(fields.filter((field:any) => field.qid!==qid))
@@ -232,48 +188,6 @@ function AddQuestions() {
 		qformik.setFieldValue('min',field.min)
 	}
 
-	// function editQuestionBtn(){
-	// 	if(fields.filter((field:any) => field.qid===currEditId).length>0){
-	// 		setFields([...fields.filter((field:any) => field.qid!==currEditId),
-	// 			{
-	// 				qid:currEditId,
-	// 				question:question,
-	// 				type:type,
-	// 				fieldRequired:selectedItems.includes('required')?true:false,
-	// 				max:selectedItems.includes('maxLength')?max:undefined,
-	// 				min:selectedItems.includes('minLength')?min:undefined,
-	// 				maxLength:selectedItems.includes('maxLength')?true:false,
-	// 				minLength:selectedItems.includes('minLength')?true:false,
-	// 			}
-	// 		])
-	// 		dispatch(updateField({
-	// 			id:String(id),
-	// 			fields:
-	// 			[...fields.filter((field:any) => field.qid!==currEditId),
-	// 				{
-	// 					qid:currEditId,
-	// 					question:question,
-	// 					type:type,
-	// 					fieldRequired:selectedItems.includes('required')?true:false,
-	// 					max:selectedItems.includes('maxLength')?max:undefined,
-	// 					min:selectedItems.includes('minLength')?min:undefined,
-	// 					maxLength:selectedItems.includes('maxLength')?true:false,
-	// 					minLength:selectedItems.includes('minLength')?true:false,
-	// 				}
-	// 			]
-	// 		}))
-
-	// 	}
-		
-	// 	setQuestion('')
-	// 	setType('')
-	// 	setMax(undefined)
-	// 	setMin(undefined)
-	// 	selectedItems.length=0
-
-	// 	setEditMode(false)
-	// }
-
     return (
 		<>
 			<div className="container">
@@ -284,8 +198,6 @@ function AddQuestions() {
 							className="input-box" 
 							type="text" placeholder="Question *"
 							name="question"
-							// value={question}
-							// onChange={(e:any)=> setQuestion(e.target.value)}
 							value={qformik.values.question}
 							onChange={qformik.handleChange}
 							onBlur={qformik.handleBlur}
@@ -295,8 +207,6 @@ function AddQuestions() {
 						<select 
 							className="input-box"
 							name="type"
-							// value={type} 
-							// onChange={(e:any)=> setType(e.target.value)}
 							value={qformik.values.type}
 							onChange={qformik.handleChange}
 							onBlur={qformik.handleBlur}
@@ -318,9 +228,7 @@ function AddQuestions() {
 								<input className="input-box"
 								name="max"
 								type="number" 
-								placeholder="Max*" 
-								// value={max} 
-								// onChange={(e:any)=> setMax(e.target.value)}
+								placeholder="Max*"
 								value={qformik.values.max}
 								onChange={qformik.handleChange}
 								onBlur={qformik.handleBlur}
@@ -332,8 +240,6 @@ function AddQuestions() {
 									className="input-box" 
 									type="number" placeholder="Min*"
 									name="min"
-									// value={min} 
-									// onChange={(e:any)=> setMin(e.target.value)}
 									value={qformik.values.min}
 									onChange={qformik.handleChange}
 									onBlur={qformik.handleBlur}
@@ -347,8 +253,7 @@ function AddQuestions() {
 						{!editMode && 
 						<button 
 							className="add-question-btn" 
-							type="submit" 
-							// onClick={addQuestionBtn}
+							type="submit"
 						>
 							Add Question to From
 						</button>
@@ -356,8 +261,7 @@ function AddQuestions() {
 						{editMode && 
 						<button 
 							className="add-question-btn" 
-							type="submit" 
-							// onClick={editQuestionBtn}
+							type="submit"
 						>
 							Edit Question to From
 						</button>

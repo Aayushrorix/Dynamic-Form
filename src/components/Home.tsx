@@ -1,14 +1,11 @@
-// import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './css/Home.css'
 import { useDispatch, useSelector } from 'react-redux'
 import { removeForm } from '../state/slices/FormSlice';
-// import { Link } from 'react-router-dom'
 
 function Home() {
     interface RootState {
-        forms: any; // Adjust 'any' to the actual type of your 'forms' state
-        // Add more state slices as needed
+        forms: any;
     }
     const forms = useSelector((state: RootState) => state.forms);
     const nevigate = useNavigate()

@@ -1,4 +1,3 @@
-// import React from 'react'
 import './css/Preview.css'
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom'
@@ -8,40 +7,34 @@ import * as Yup from 'yup'
 
 function Preview() {
     const {id} = useParams()
-    const nevigate = useNavigate()
+    const navigate = useNavigate()
     interface RootState {
         forms: any
     }
     const forms = useSelector((state: RootState) => state.forms);
     const form = forms.filter((form:any)=>form.id===id)[0]
 
-    console.log("==============> ",form.fields.map((f:any)=>f.question))
-    const questions:string[] = form.fields.map((f:any)=>f.question)
+    const initialValues: any = {};
+    const validationSchema: any = {};
 
-    const initialValues:any = {}
-    for (let i = 0; i < questions.length; i++) {
-        // console.log(questions[i]);
-        //   [questions[i]]=''
-        initialValues[ questions[i] ]=''
-    }
-
+    form.fields.forEach((field: any) => {
+        initialValues[field.question] = '';
+        if (field.fieldRequired) {
+            validationSchema[field.question] = Yup.string().required(`${field.question} is required`);
+        } else {
+            validationSchema[field.question] = Yup.string().notRequired();
+        }
+    });
 
     const pformik = useFormik({
         initialValues: initialValues,
-        validationSchema: Yup.object({
-
-        }),
+        validationSchema: Yup.object().shape(validationSchema),
         onSubmit: (values, { resetForm }) => {
             console.log("Form Submitted", values);
-            // Reset the form after submission
             resetForm();
-            nevigate('/')
-
-      
-            console.log("Form Submitted", values);
-      
+            navigate('/');
         }
-    })
+    });
 
     return (
         <>
@@ -56,7 +49,9 @@ function Preview() {
                             name={field.question}
                             value={pformik.values[field.question]}
                             onChange={pformik.handleChange}
+                            onBlur={pformik.handleBlur}
                             placeholder={field.question}/>
+                            {pformik.touched[field.question] && pformik.errors[field.question] && <p style={{color:"red"}}>{field.question} is Required</p>}
                         </>
                     ))}
                     <div>

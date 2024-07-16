@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const initialState = {
-    // forms: [{id:1, text:"Hello World"}]
     forms: [
         {
             id:'asdasd',

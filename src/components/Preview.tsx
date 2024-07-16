@@ -38,9 +38,9 @@ function Preview() {
 
     return (
         <>
-            <div className='preview-main'>
+            <div className='preview-form'>
                 <h1>{form.formName}</h1>
-                <form onSubmit={pformik.handleSubmit}>
+                <form onSubmit={pformik.handleSubmit} className=''>
                     {form.fields.map((field:any)=>(
                         <>
                             <div className='input-form-label'>{field.question}</div>

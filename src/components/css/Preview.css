@@ -33,3 +33,10 @@
     padding: 15px;
     border-radius: 5px;
 }
+
+.preview-form{
+    text-align: center;
+    background-color: rgba(245, 229, 209, 0.427);
+    margin: auto 6rem;
+    border-radius: 15px;
+}

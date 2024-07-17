@@ -27,7 +27,7 @@ function AddQuestions() {
 	const [dropList, setDropList] = useState<string[]>([])
 
     const options = [
-        { value: 'required', label: 'Requited' },
+        { value: 'required', label: 'Required' },
         { value: 'maxLength', label: 'Max Length' },
         { value: 'minLength', label: 'Min Length' },
     ];

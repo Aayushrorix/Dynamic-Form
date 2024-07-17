@@ -4,12 +4,13 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
+import { form } from './models';
 
 function Preview() {
     const {id} = useParams()
     const navigate = useNavigate()
     interface RootState {
-        forms: any
+        forms: form[]
     }
     const forms = useSelector((state: RootState) => state.forms);
     const form = forms.filter((form:any)=>form.id===id)[0]
@@ -108,7 +109,7 @@ function Preview() {
                                 <>
                                     {field.radioList?.map((opt:string)=>(
                                         <>
-                                        {opt}<input type="radio" name={field.question} value={opt} onChange={()=>handleOptionChange(field.question,opt)}/>
+                                        {opt}<input type="radio" name={field.question} onBlur={pformik.handleBlur} value={opt} onChange={()=>handleOptionChange(field.question,opt)}/>
                                         </>
                                     ))}
                                 </>

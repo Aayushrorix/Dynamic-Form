@@ -7,13 +7,14 @@ import { nanoid } from '@reduxjs/toolkit';
 
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
+import { form } from './models.tsx';
 
 function AddForm() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { oldId } = useParams();
     interface RootState {
-        forms: any[];
+        forms: form[];
     }
 
     const forms = useSelector((state: RootState) => state.forms);

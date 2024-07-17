@@ -7,18 +7,24 @@ import { useSelector,useDispatch } from 'react-redux'
 import { v4 as uuidv4 } from 'uuid'
 import { useFormik } from "formik";
 import * as Yup from 'yup'
+import { field, form } from "./models.tsx";
+// import {form}
 
 
 function AddQuestions() {
+	interface RootState {
+        forms: form[];
+    }
+
     const nevigate = useNavigate()
     const dispatch = useDispatch()
-	const forms = useSelector((state:any) => state.forms)
+	const forms = useSelector((state:RootState) => state.forms)
 	const {id} = useParams()
 	const [editMode, setEditMode] = useState(false)
 	const [currEditId, setCurrEditId] = useState<string>()
 
-	const form:any = forms.filter((f:any)=>f.id===id)[0]
-	const [fields,setFields] = useState(form.fields?form.fields:[])
+	const form:form = forms.filter((f:form)=>f.id===id)[0]
+	const [fields,setFields] = useState<field[]>(form.fields?form.fields:[])
 
 	const [radioOpt, setradioOpt] = useState('')
 	const [radioList, setRadioList] = useState<string[]>([])
@@ -117,8 +123,8 @@ function AddQuestions() {
 				setDropList([])
 			}
 			else{
-				if(fields.filter((field:any) => field.qid===currEditId).length>0){
-					setFields([...fields.filter((field:any) => field.qid!==currEditId),
+				if(fields.filter((field:field) => field.qid===currEditId).length>0){
+					setFields([...fields.filter((field:field) => field.qid!==currEditId),
 						{
 							qid:currEditId,
 							question:question,
@@ -135,7 +141,7 @@ function AddQuestions() {
 					dispatch(updateField({
 						id:String(id),
 						fields:
-						[...fields.filter((field:any) => field.qid!==currEditId),
+						[...fields.filter((field:field) => field.qid!==currEditId),
 							{
 								qid:currEditId,
 								question:question,
@@ -167,19 +173,19 @@ function AddQuestions() {
 	useEffect(()=>{setMax(qformik.values.max)},[qformik.values.max])
 	useEffect(()=>{setMin(qformik.values.min)},[qformik.values.min])
 
-	function removeQuestion(qid:string){
-		setFields(fields.filter((field:any) => field.qid!==qid))
-		dispatch(updateField({id:String(id),fields:fields.filter((field:any) => field.qid!==qid)}))
+	function removeQuestion(qid:string|undefined){
+		setFields(fields.filter((field:field) => field.qid!==qid))
+		dispatch(updateField({id:String(id),fields:fields.filter((field:field) => field.qid!==qid)}))
 	}
 
-	function editQuestion(qid:string){
+	function editQuestion(qid:string|undefined){
 		setCurrEditId(qid)
 		qformik.setFieldValue('qid',qid)
 
 		setEditMode(true)
 
 
-		const field = fields.filter((field:any) => field.qid===qid)[0]
+		const field = fields.filter((field:field) => field.qid===qid)[0]
 
 		setQuestion(field.question)
 		qformik.setFieldValue('question',field.question)
@@ -375,7 +381,7 @@ function AddQuestions() {
 				</div>
 
 				<div className="right">					
-					{fields.map((f:any,index:number)=>(
+					{fields.map((f:field,index:number)=>(
 						<>
 						<div className="grid-item">
 							<span style={{textAlign:'start',alignContent:'start',alignItems:'start'}}>

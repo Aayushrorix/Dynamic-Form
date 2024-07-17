@@ -10,7 +10,6 @@ fieldset legend {
     height: 1px !important;
     padding: 0 !important;
     margin: -1px !important;
-    /* overflow: hidden !important; */
     clip: rect(0, 0, 0, 0) !important;
     white-space: nowrap !important;
     border: 0 !important;
@@ -39,20 +38,14 @@ fieldset legend {
   .container .right {
       width: 48%;
       position: relative;
-      /* float: right; */
       margin: 15px;
-      /* overflow: hidden; */
   }
 
   .left {
-    
-    /* overflow: hidden; */
     text-align: center;
     background-color: rgba(245, 229, 209, 0.427);
     opacity: 0.9;
     border-radius: 15px;
-    /* padding: 10px; */
-    /* padding-bottom: 25%; */
     margin-top: 0px;
     position: -ms-page;
     height: fit-content;
@@ -60,13 +53,10 @@ fieldset legend {
   }
 
   .right {
-    /* overflow: hidden; */
     text-align: center;
     background-color: rgba(245, 229, 209, 0.427);
     opacity: 0.9;
     border-radius: 15px;
-    /* padding: 10px; */
-    /* padding-bottom: 25%; */
     margin-top: 0px;
     position: -ms-page;
     height: 600px;
@@ -74,8 +64,6 @@ fieldset legend {
 
   .right{
     text-align: center;
-    /* overflow: scroll; */
-    /* overflow-y: scroll; */
     overflow-y: auto;
   }
   
@@ -107,7 +95,6 @@ fieldset legend {
 }
 
 .grid-item {
-  /* background-color: #f0f0f0; */
   background-color: rgba(245, 229, 209, 0.427);
   padding: 20px;
   text-align: center;

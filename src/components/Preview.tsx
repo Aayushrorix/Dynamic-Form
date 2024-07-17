@@ -4,7 +4,6 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
-// import { useState } from 'react';
 
 function Preview() {
     const {id} = useParams()
@@ -14,7 +13,6 @@ function Preview() {
     }
     const forms = useSelector((state: RootState) => state.forms);
     const form = forms.filter((form:any)=>form.id===id)[0]
-    // const [radioOpt, setRadioOpt] = useState('')
 
     const initialValues: any = {};
     const validationSchema: any = {};
@@ -22,9 +20,39 @@ function Preview() {
     form.fields.forEach((field: any) => {
         initialValues[field.question] = '';
         if (field.fieldRequired) {
-            validationSchema[field.question] = Yup.string().required(`${field.question} is required`);
+            if(field.maxLength && field.minLength && ['text','number','textArea'].includes(field.type)){
+                validationSchema[field.question] = Yup.string().required(`${field.question} is required`)
+                .max(field.max,`${field.question} must be less than or equal to ${field.max}`)
+                .min(field.min,`${field.question} must be greater than or equal to ${field.min}`)
+            }
+            else if(field.maxLength && ['text','number','textArea'].includes(field.type)){
+                validationSchema[field.question] = Yup.string().required(`${field.question} is required`)
+                .max(field.max,`${field.question} must be less than or equal to ${field.max}`)
+            }
+            else if(field.minLength && ['text','number','textArea'].includes(field.type)){
+                validationSchema[field.question] = Yup.string().required(`${field.question} is required`)
+                .min(field.min,`${field.question} must be greater than or equal to ${field.min}`)
+            }
+            else{
+                validationSchema[field.question] = Yup.string().required(`${field.question} is required`)
+            }
         } else {
-            validationSchema[field.question] = Yup.string().notRequired();
+            if(field.maxLength && field.minLength && ['text','number','textArea'].includes(field.type) ){
+                validationSchema[field.question] = Yup.string().notRequired()
+                .max(field.max,`${field.question} must be less than or equal to ${field.max}`)
+                .min(field.min,`${field.question} must be greater than or equal to ${field.min}`)
+            }
+            else if(field.maxLength && ['text','number','textArea'].includes(field.type)){
+                validationSchema[field.question] = Yup.string().notRequired()
+                .max(field.max,`${field.question} must be less than or equal to ${field.max}`)
+            }
+            else if(field.minLength && ['text','number','textArea'].includes(field.type)){
+                validationSchema[field.question] = Yup.string().notRequired()
+                .min(field.min,`${field.question} must be greater than or equal to ${field.min}`)
+            }
+            else{
+                validationSchema[field.question] = Yup.string().notRequired()
+            }
         }
     });
 
@@ -37,6 +65,10 @@ function Preview() {
             navigate('/');
         }
     });
+
+    function handleOptionChange(question:string,opt:string){
+        pformik.setFieldValue(question,opt)
+    }
 
     return (
         <>
@@ -76,15 +108,13 @@ function Preview() {
                                 <>
                                     {field.radioList?.map((opt:string)=>(
                                         <>
-                                        {opt}<input type="radio" name={field.question} value={opt}/>
+                                        {opt}<input type="radio" name={field.question} value={opt} onChange={()=>handleOptionChange(field.question,opt)}/>
                                         </>
                                     ))}
                                 </>
                             }
 
-                            
-
-                            {pformik.touched[field.question] && pformik.errors[field.question] && <p style={{color:"red"}}>{field.question} is Required</p>}
+                            {pformik.touched[field.question] && pformik.errors[field.question] && <p style={{color:"red"}}>{String(pformik.errors[field.question])}</p>}
                         </>
                     ))}
                     <div>

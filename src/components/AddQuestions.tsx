@@ -166,10 +166,6 @@ function AddQuestions() {
 	useEffect(()=>{setType(qformik.values.type)},[qformik.values.type])
 	useEffect(()=>{setMax(qformik.values.max)},[qformik.values.max])
 	useEffect(()=>{setMin(qformik.values.min)},[qformik.values.min])
-	// useEffect(()=>{qformik.setFieldValue('radioList',radioList)},[radioList])
-	// useEffect(()=>{
-	// 	setRadioList([])
-	// },[type])
 
 	function removeQuestion(qid:string){
 		setFields(fields.filter((field:any) => field.qid!==qid))
@@ -249,7 +245,6 @@ function AddQuestions() {
 		setDropOpt('')
 	}
 
-	// console.log(radioList)
     return (
 		<>
 			<div className="container">
